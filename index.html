@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Titanes</title>
+<link rel="icon" href="./icon-09.jpg">
+<meta name="theme-color" content="#000000">
+<style>
+:root{--negro:#000;--dorado:#FFD700;--blanco:#fff;--gris:#121212}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:var(--negro);color:var(--dorado)}
+.top{background:#000;border-bottom:3px solid var(--dorado);padding:12px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
+.ic{width:46px;height:46px;border:2px solid var(--dorado);border-radius:12px;overflow:hidden}
+.ic img{width:100%;height:100%;object-fit:cover}
+.wrap{max-width:600px;margin:0 auto;padding:14px;padding-bottom:100px}
+.card{background:var(--gris);border:2px solid var(--dorado);border-radius:16px;padding:16px;margin-bottom:16px}
+.tit{color:var(--dorado);font-weight:900;text-align:center;font-size:14px;margin-bottom:10px}
+.lb{color:var(--dorado);font-weight:900;font-size:11px;margin:10px 0 4px 2px}
+.in{width:100%;height:56px;background:#000;border:2px solid var(--dorado);color:var(--dorado);border-radius:12px;padding:0 14px;font-weight:700}
+.hint{font-size:9px;color:#888;text-align:right}
+.btn{width:100%;height:56px;background:var(--blanco);color:#000;border:2px solid var(--dorado);border-radius:12px;font-weight:900;font-size:13px;margin-top:10px;cursor:pointer}
+.ok{display:none;margin-top:10px;border:2px solid var(--dorado);color:var(--dorado);background:#000;border-radius:10px;padding:10px;text-align:center;font-weight:900;font-size:11px}
+.o{color:var(--dorado);font-weight:900;text-align:center;margin:12px 0;font-size:12px}
+#install{position:fixed;right:14px;bottom:14px;background:var(--blanco);color:#000;border:3px solid var(--dorado);border-radius:28px;padding:12px 22px;font-weight:900;z-index:99}
+</style>
+</head>
+<body>
+<div class="top"><div class="ic"><img src="./icon-09.jpg"></div><b style="color:#FFD700">Titanes</b></div>
+<div class="wrap">
+
+<div class="card">
+<div class="tit">🔑INICIAR SESIÓN🔑</div>
+<div class="lb">Usuario</div><input class="in" id="loginUser" maxlength="75" placeholder="75 caracteres"><div class="hint">75 caracteres</div>
+<div class="lb">Contraseña</div><input class="in" id="loginPass" type="password" maxlength="75" placeholder="75 caracteres"><div class="hint">75 caracteres</div>
+<button class="btn" onclick="location.href='./tienda.html'">Botón Login</button>
+<div class="o">Ó<br>Acceder con un click más fácil y rápido y sencillo.</div>
+<button class="btn" onclick="location.href='./tienda.html'">Botón UN CLICK</button>
+</div>
+
+<div class="card">
+<div class="tit">REGISTRARME</div>
+<div class="lb">Primer Nombre</div><input class="in" id="p1">
+<div class="lb">Segundo Nombre</div><input class="in" id="p2">
+<div class="lb">Primer Apellido</div><input class="in" id="a1">
+<div class="lb">Segundo Apellido</div><input class="in" id="a2">
+<div style="display:flex;gap:8px"><div style="flex:1"><div class="lb">Usuario</div><input class="in" id="ru"></div><div style="flex:1"><div class="lb">Contraseña</div><input class="in" id="rp" type="password"></div><div style="flex:1"><div class="lb">Teléfono</div><input class="in" id="rt"></div></div>
+<div class="lb">E-mail Primario</div><input class="in" id="e1">
+<div class="lb">E-mail Secundario</div><input class="in" id="e2">
+<div style="display:flex;gap:8px"><div style="flex:1"><div class="lb">Apodo</div><input class="in"></div><div style="flex:1"><div class="lb">Fecha de Nacimiento</div><input class="in" type="date"></div></div>
+<div style="display:flex;gap:8px"><div style="flex:1"><div class="lb">Edad</div><input class="in"></div><div style="flex:1"><div class="lb">Ciudad</div><input class="in"></div><div style="flex:1"><div class="lb">Estado</div><input class="in"></div><div style="flex:1"><div class="lb">País</div><input class="in"></div></div>
+<button class="btn" onclick="okReg.style.display='block'">Botón Registrar</button>
+<div id="okReg" class="ok">Su información se ha guardado con registro exitoso.</div>
+</div>
+
+<div class="card">
+<div class="tit">UN CLICK</div>
+<div class="lb">Usuario</div><input class="in">
+<div class="lb">Contraseña</div><input class="in" type="password">
+<button class="btn" onclick="okUn.style.display='block';setTimeout(()=>location.href='./tienda.html',800)">Autorizar</button>
+<div id="okUn" class="ok">Se Autorizó el acceso con *Un Click* con que usted iniciara sesión más fácil y rápido.</div>
+</div>
+
+<div class="card">
+<div class="tit">Olvide mi Usuario y Contraseña</div>
+<div class="lb">escribe aquí tu E-mail</div><input class="in" id="mail" placeholder="escribir e-mail">
+<button class="btn" onclick="enviar()">Enviar</button>
+<div class="lb">escribe aquí el código 5 dígitos</div><input class="in" id="cod" maxlength="5">
+<div class="lb">Usuario</div><input class="in" placeholder="Escribir">
+<div class="lb">Contraseña</div><input class="in" type="password" placeholder="Escribir">
+<div class="lb">Usted desea actualizar su Inicio de Sesión Si</div><button class="btn" onclick="act()">Si</button>
+<div id="okAct" class="ok">Actualización con Éxito.</div>
+</div>
+
+</div>
+<button id="install">Instalar</button>
+<script>
+let dp;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;});
+install.onclick=async()=>{if(dp){dp.prompt();await dp.userChoice;install.textContent='INSTALADO ✅'}else alert('Chrome ⋮ > Instalar app')};
+function enviar(){const c=Math.floor(10000+Math.random()*90000);localStorage.setItem('c',c);alert('Código: '+c);}
+function act(){if(cod.value!=localStorage.getItem('c')){alert('Código incorrecto');return;}okAct.style.display='block';}
+</script>
+</body>
+                                    </html>
