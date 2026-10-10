@@ -2,21 +2,246 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Titanes Tienda</title>
+<title>TIENDA - Titanes</title>
 <link rel="icon" href="./icon-09.jpg">
 <style>
+:root{--negro:#000;--dorado:#FFD700;--blanco:#fff;--gris:#121212;--gris2:#1e1e1e}
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-body{background:#000;color:#FFD700}
-.top{background:#000;border-bottom:3px solid #FFD700;padding:12px;display:flex;gap:10px;align-items:center}
-.ic{width:48px;height:48px;border-radius:50%;border:2px solid #FFD700;overflow:hidden}
-.ic img{width:100%;height:100%;object-fit:cover}
-.wrap{max-width:600px;margin:auto;padding:14px}
-.card{background:#121212;border:2px solid #FFD700;border-radius:16px;padding:16px;text-align:center}
-.btn{width:100%;height:52px;background:#fff;color:#000;border:2px solid #FFD700;border-radius:12px;font-weight:900;margin-top:10px}
+body{background:var(--negro);color:var(--dorado)}
+.top{position:sticky;top:0;z-index:50;background:#000;border-bottom:3px solid var(--dorado);padding:8px 10px;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;overflow-x:auto}
+.icon{width:36px;height:36px;border-radius:50%;background:#000;border:2px solid var(--dorado);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.icon img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.brand{font-weight:900;color:var(--dorado);white-space:nowrap}
+.searchBox{display:flex;align-items:center;gap:4px;background:#111;border:2px solid var(--dorado);border-radius:10px;padding:0 8px;height:36px}
+.searchBox input{background:transparent;border:0;color:var(--dorado);outline:none;width:90px}
+.small{font-size:14px;cursor:pointer}
+.drawer{position:fixed;left:-100%;top:0;bottom:0;width:300px;background:#0a0a0a;border-right:3px solid var(--dorado);z-index:100;overflow-y:auto;transition:.3s;padding:10px}
+.drawer.open{left:0}
+.drawer h3{color:var(--dorado);text-align:center;margin:10px 0}
+.item{padding:10px;border:1px solid #333;border-radius:10px;margin-bottom:6px;color:var(--dorado);font-size:12px;font-weight:900;cursor:pointer}
+.item:hover{background:#1a1a1a}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;z-index:90}
+.overlay.show{display:block}
+.wrap{max-width:1100px;margin:auto;padding:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.cardArt{background:var(--gris);border:2px solid var(--dorado);border-radius:14px;overflow:hidden;position:relative}
+.cardArt img{width:100%;height:140px;object-fit:cover}
+.info{padding:8px}
+.price{font-weight:900;color:var(--dorado);font-size:12px}
+.badge{font-size:9px;background:var(--blanco);color:#000;border-radius:6px;padding:2px 5px;font-weight:900;margin-right:3px}
+.dots{position:absolute;right:6px;top:6px;background:rgba(0,0,0,.7);border:1px solid var(--dorado);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.btnW{width:100%;height:36px;background:var(--blanco);color:#000;border:2px solid var(--dorado);border-radius:10px;font-weight:900;margin-top:6px;cursor:pointer}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:200;display:none;overflow-y:auto;padding:12px}
+.modal.open{display:block}
+.modalBox{max-width:600px;margin:auto;background:#121212;border:3px solid var(--dorado);border-radius:16px;padding:14px}
+.lb{font-size:11px;font-weight:900;color:var(--dorado);margin:8px 0 3px}
+.in{width:100%;min-height:40px;background:#000;border:2px solid var(--dorado);color:var(--dorado);border-radius:10px;padding:8px}
+.footer{ text-align:center;padding:20px;color:var(--dorado);font-weight:900;border-top:2px solid var(--dorado);margin-top:20px}
 </style>
 </head>
 <body>
-<div class="top"><div class="ic"><img src="./icon-09.jpg"></div><b>Titanes</b></div>
-<div class="wrap"><div class="card"><div style="font-weight:900">Bienvenido a tienda.html</div><div style="margin-top:8px;font-size:12px;font-weight:900">Sí, Login y UN CLICK te llevan aquí</div><button class="btn" onclick="location.href='./index.html'">← Regresar</button></div></div>
+
+<div class="top">
+<div class="icon" onclick="drawer.classList.add('open');overlay.classList.add('show')">☰</div>
+<div class="icon"><img src="./icon-09.jpg"></div>
+<div class="brand">Titanes</div>
+<div class="searchBox">🔎<input id="buscador" placeholder="Buscar 35 arts" oninput="filtrar()"></div>
+<div class="icon" onclick="notify()">🔔</div>
+<a class="icon" href="mailto:easportsfcmobile631@gmail.com" style="text-decoration:none">📧</a>
+<a class="icon" href="https://wa.me/528671640906" target="_blank" style="text-decoration:none">💬</a>
+<div class="icon" onclick="compartirApp()">⋮</div>
+<div class="icon" onclick="verCarrito()">🛒<span id="cartN" style="font-size:10px">0</span></div>
+<div class="icon" onclick="openPerfil()"><img id="topAvatar" src="./icon-09.jpg"></div>
+</div>
+
+<div id="drawer" class="drawer">
+<h3>TIENDA - Menú</h3>
+<div class="item">Acerca de</div><div class="item">Configuración</div><div class="item">Parámetros</div>
+<div class="item">Actualización del Sistema</div><div class="item">Administración del Sistema</div>
+<div class="item">Usuarios</div><div class="item">Cuentas</div><div class="item">Google</div>
+<div class="item">Acerca de la Aplicación</div><div class="item">Bienestar Digital y Controles Parentales</div>
+<div class="item">Atajos y Accesibilidad</div><div class="item">Modo Ultra Juego</div>
+<div class="item">Ubicación</div><div class="item">Privacidad</div><div class="item">Contraseña</div>
+<div class="item">Seguridad</div><div class="item">RAM y Almacenamiento</div><div class="item">Batería</div>
+<div class="item">Sonido y Vibración</div><div class="item">Efectos Dinámicos</div><div class="item">Pantalla y Brillo</div>
+<div class="item">Más Conexiones</div><div class="item">Bluetooth</div><div class="item">Wi-fi y Datos Móviles</div>
+<div class="item">Información del Software</div><div class="item">Estado</div><div class="item">Información Legal</div>
+<div class="item">Servicio al Cliente</div><div class="item">Versión del Sistema Operativo</div>
+<div class="item">Servicio de Garantía</div><div class="item">Centros de Servicios</div><div class="item">Derechos del Autor</div>
+<div class="item">Declaración de privacidad</div><div class="item">Código Abierto</div><div class="item">Noticias</div>
+<div class="item">Eventos</div><div class="item">Rueda de Prensa</div><div class="item">Belleza</div><div class="item">Cosméticos</div>
+<div class="item">Maquillaje</div><div class="item">Tarjeta de Regalo</div>
+<button class="btnW" onclick="location.href='./index.html'">Botón [Iniciar Sesión]</button>
+<button class="btnW" onclick="drawer.classList.remove('open');overlay.classList.remove('show')">Botón [Tienda]</button>
+</div>
+<div id="overlay" class="overlay" onclick="drawer.classList.remove('open');this.classList.remove('show')"></div>
+
+<div class="wrap">
+<div style="display:flex;gap:8px;margin:10px 0">
+<button class="btnW" style="flex:1" onclick="filtrarCat('all')">Todo</button>
+<button class="btnW" style="flex:1" onclick="filtrarCat('nuevo')">Nuevo</button>
+<button class="btnW" style="flex:1" onclick="filtrarCat('destacado')">Destacado</button>
+</div>
+<div id="grid" class="grid"></div>
+<div class="footer">Hecho en México 2026 - TITANES - easportsfcmobile631@gmail.com - +52 8671640906</div>
+</div>
+
+<!-- MODAL PERFIL -->
+<div id="perfilModal" class="modal">
+<div class="modalBox">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<h3>👤 Perfil</h3>
+<div style="display:flex;gap:6px"><button class="icon" onclick="compartirPerfil()">⋮</button><button class="icon" onclick="perfilModal.classList.remove('open')">✕</button></div>
+</div>
+
+<div style="text-align:center;margin:10px 0">
+<img id="avatarPrev" src="./icon-09.jpg" style="width:90px;height:90px;border-radius:50%;border:3px solid gold;object-fit:cover">
+<br><input type="file" id="fotoInput" accept="image/*" style="margin-top:6px">
+<button class="btnW" onclick="guardarFoto()">Guardar Foto</button>
+</div>
+
+<div class="lb">Descripción</div><textarea id="desc" class="in" placeholder="Escribe tu descripción"></textarea><button class="btnW" onclick="guardarPerfil()">Guardar</button>
+<div class="lb">Biografía</div><textarea id="bio" class="in"></textarea><button class="btnW" onclick="guardarPerfil()">Guardar</button>
+
+<div style="display:flex;gap:6px"><div style="flex:1"><div class="lb">Nombre Completo</div><input id="nombre" class="in"></div><div style="flex:1"><div class="lb">Edad</div><input id="edad" class="in"></div><div style="flex:1"><div class="lb">Apodo</div><input id="apodo" class="in"></div></div>
+<div class="lb">Escolaridad</div><input id="esc" class="in">
+
+<div class="lb">16 Links Webs (separados por coma)</div><textarea id="links16" class="in" placeholder="https://..."></textarea><button class="btnW" onclick="guardarPerfil()">Guardar</button>
+
+<div class="lb">9 Links de Redes Sociales</div><textarea id="links9" class="in" placeholder="https://instagram.com/..."></textarea><button class="btnW" onclick="guardarPerfil()">Guardar</button>
+
+<div style="display:flex;gap:6px"><div style="flex:1"><div class="lb">País</div><input id="pais" class="in"></div><div style="flex:1"><div class="lb">E-mail</div><input id="email" class="in" value="easportsfcmobile631@gmail.com"></div></div>
+<div style="display:flex;gap:6px"><div style="flex:1"><div class="lb">Teléfono</div><input id="tel" class="in" value="+52 8671640906"></div><div style="flex:1"><div class="lb">Ocupación</div><input id="ocu" class="in"></div></div>
+<div style="display:flex;gap:6px"><div style="flex:1"><div class="lb">Idioma</div><input id="idioma" class="in" value="Español"></div><div style="flex:1"><div class="lb">Zona horaria</div><select id="tz" class="in"></select></div></div>
+
+<button class="btnW" onclick="guardarPerfil()">[Guardar]</button>
+<button class="btnW" onclick="cerrarSesion()">[Cerrar Sesión]</button>
+<button class="btnW" onclick="perfilModal.classList.remove('open')">[Tienda]</button>
+
+<div class="lb">Compartir enlace de perfil</div><button class="btnW" onclick="compartirPerfil()">Compartir enlace de perfil</button>
+<p style="font-size:10px;margin-top:8px">* La información que se registre en mi perfil se queda, no se borra. Imagen también se queda (localStorage).</p>
+</div>
+</div>
+
+<script>
+const articulos=[
+{id:1,n:"TITANES Playera Negra Oro",p:"$299",d:"20%",cat:"destacado",img:"https://picsum.photos/seed/t1/300/300"},
+{id:2,n:"TITANES Gorra Dorada",p:"$199",d:"15%",cat:"nuevo",img:"https://picsum.photos/seed/t2/300/300"},
+{id:3,n:"TITANES Tenis Elite",p:"$899",d:"30%",cat:"destacado",img:"https://picsum.photos/seed/t3/300/300"},
+{id:4,n:"TITANES Mochila",p:"$450",d:"10%",cat:"nuevo",img:"https://picsum.photos/seed/t4/300/300"},
+{id:5,n:"TITANES Reloj",p:"$1200",d:"25%",cat:"destacado",img:"https://picsum.photos/seed/t5/300/300"},
+{id:6,n:"TITANES Audifonos",p:"$350",d:"5%",cat:"nuevo",img:"https://picsum.photos/seed/t6/300/300"},
+{id:7,n:"TITANES Lentes",p:"$280",d:"12%",cat:"all",img:"https://picsum.photos/seed/t7/300/300"},
+{id:8,n:"TITANES Perfume",p:"$520",d:"18%",cat:"all",img:"https://picsum.photos/seed/t8/300/300"},
+{id:9,n:"TITANES Carteras",p:"$180",d:"8%",cat:"all",img:"https://picsum.photos/seed/t9/300/300"},
+{id:10,n:"TITANES Cinturon",p:"$220",d:"9%",cat:"all",img:"https://picsum.photos/seed/t10/300/300"},
+{id:11,n:"TITANES Sudadera",p:"$600",d:"20%",cat:"nuevo",img:"https://picsum.photos/seed/t11/300/300"},
+{id:12,n:"TITANES Jeans",p:"$750",d:"15%",cat:"destacado",img:"https://picsum.photos/seed/t12/300/300"},
+{id:13,n:"TITANES Camisa",p:"$400",d:"10%",cat:"all",img:"https://picsum.photos/seed/t13/300/300"},
+{id:14,n:"TITANES Shorts",p:"$300",d:"7%",cat:"all",img:"https://picsum.photos/seed/t14/300/300"},
+{id:15,n:"TITANES Calcetas Pack",p:"$120",d:"5%",cat:"all",img:"https://picsum.photos/seed/t15/300/300"},
+{id:16,n:"TITANES Pulsera",p:"$90",d:"3%",cat:"nuevo",img:"https://picsum.photos/seed/t16/300/300"},
+{id:17,n:"TITANES Anillo",p:"$150",d:"6%",cat:"destacado",img:"https://picsum.photos/seed/t17/300/300"},
+{id:18,n:"TITANES Cadena Oro",p:"$2000",d:"25%",cat:"destacado",img:"https://picsum.photos/seed/t18/300/300"},
+{id:19,n:"TITANES Maquillaje Set",p:"$380",d:"14%",cat:"all",img:"https://picsum.photos/seed/t19/300/300"},
+{id:20,n:"TITANES Cosméticos Kit",p:"$420",d:"16%",cat:"all",img:"https://picsum.photos/seed/t20/300/300"},
+{id:21,n:"TITANES Belleza Crema",p:"$250",d:"11%",cat:"all",img:"https://picsum.photos/seed/t21/300/300"},
+{id:22,n:"TITANES Labial",p:"$130",d:"4%",cat:"nuevo",img:"https://picsum.photos/seed/t22/300/300"},
+{id:23,n:"TITANES Sombra Ojos",p:"$160",d:"8%",cat:"all",img:"https://picsum.photos/seed/t23/300/300"},
+{id:24,n:"TITANES Tarjeta Regalo $500",p:"$500",d:"0%",cat:"destacado",img:"https://picsum.photos/seed/t24/300/300"},
+{id:25,n:"TITANES Tarjeta Regalo $1000",p:"$1000",d:"0%",cat:"destacado",img:"https://picsum.photos/seed/t25/300/300"},
+{id:26,n:"TITANES Balon",p:"$600",d:"12%",cat:"all",img:"https://picsum.photos/seed/t26/300/300"},
+{id:27,n:"TITANES Botella",p:"$110",d:"3%",cat:"nuevo",img:"https://picsum.photos/seed/t27/300/300"},
+{id:28,n:"TITANES Termo",p:"$230",d:"9%",cat:"all",img:"https://picsum.photos/seed/t28/300/300"},
+{id:29,n:"TITANES Case Celular",p:"$180",d:"6%",cat:"all",img:"https://picsum.photos/seed/t29/300/300"},
+{id:30,n:"TITANES Cargador",p:"$300",d:"10%",cat:"all",img:"https://picsum.photos/seed/t30/300/300"},
+{id:31,n:"TITANES Bocina",p:"$700",d:"20%",cat:"nuevo",img:"https://picsum.photos/seed/t31/300/300"},
+{id:32,n:"TITANES Teclado",p:"$850",d:"18%",cat:"destacado",img:"https://picsum.photos/seed/t32/300/300"},
+{id:33,n:"TITANES Mouse Gamer",p:"$400",d:"12%",cat:"all",img:"https://picsum.photos/seed/t33/300/300"},
+{id:34,n:"TITANES Silla Gamer",p:"$3500",d:"30%",cat:"destacado",img:"https://picsum.photos/seed/t34/300/300"},
+{id:35,n:"TITANES Escritorio",p:"$2800",d:"22%",cat:"nuevo",img:"https://picsum.photos/seed/t35/300/300"}
+];
+
+let cart=0;
+function render(list){
+  const g=document.getElementById('grid');
+  g.innerHTML='';
+  list.forEach(a=>{
+    g.innerHTML+=`<div class="cardArt">
+    <div class="dots" onclick="compartirArt('${a.n}')">⋮</div>
+    <img src="${a.img}" loading="lazy">
+    <div class="info">
+    <div style="font-weight:900;font-size:11px">TITANES - ${a.n}</div>
+    <div><span class="badge">$ precios</span><span class="badge">% ${a.d} descuento</span>${a.cat!=='all'?`<span class="badge">${a.cat}</span>`:''}</div>
+    <div class="price">${a.p} <span style="color:#fff">Hecho en México 2026</span></div>
+    <button class="btnW" onclick="cart++;document.getElementById('cartN').textContent=cart">🛒 Agregar</button>
+    </div></div>`;
+  });
+}
+render(articulos);
+
+function filtrar(){
+  const q=buscador.value.toLowerCase();
+  render(articulos.filter(a=>a.n.toLowerCase().includes(q)));
+}
+function filtrarCat(c){
+  if(c==='all') render(articulos);
+  else render(articulos.filter(a=>a.cat===c));
+}
+function notify(){alert('🔔 Notificaciones: Tienes 3 nuevas ofertas TITANES');}
+function verCarrito(){alert('🛒 Carrito: '+cart+' artículos');}
+function compartirApp(){
+  const url=location.href;
+  if(navigator.share){navigator.share({title:'Titanes App',url});}
+  else {navigator.clipboard.writeText(url);alert('Enlace copiado: '+url);}
+}
+function compartirArt(nombre){
+  const url=location.href+'#'+encodeURIComponent(nombre);
+  if(navigator.share){navigator.share({title:nombre,url});}
+  else {navigator.clipboard.writeText(url);alert('Compartido: '+nombre+' '+url);}
+}
+function compartirPerfil(){
+  const url=location.href+'?perfil='+encodeURIComponent(localStorage.getItem('perfil_nombre')||'Titanes');
+  if(navigator.share){navigator.share({title:'Mi Perfil Titanes',url});}
+  else {navigator.clipboard.writeText(url);alert('Enlace de perfil copiado: '+url);}
+}
+// PERFIL
+function openPerfil(){document.getElementById('perfilModal').classList.add('open');cargarPerfil();cargarTZ();}
+function cargarTZ(){
+  const sel=document.getElementById('tz');
+  if(sel.options.length>0) return;
+  const tzs=Intl.supportedValuesOf?Intl.supportedValuesOf('timeZone'):["America/Mexico_City","America/New_York","America/Los_Angeles","Europe/Madrid","UTC"];
+  tzs.slice(0,120).forEach(z=>{let o=document.createElement('option');o.value=z;o.textContent=z;sel.appendChild(o);});
+}
+function guardarPerfil(){
+  const data={
+    desc:desc.value,bio:bio.value,nombre:nombre.value,edad:edad.value,apodo:apodo.value,esc:esc.value,
+    links16:links16.value,links9:links9.value,pais:pais.value,email:email.value,tel:tel.value,ocu:ocu.value,idioma:idioma.value,tz:tz.value
+  };
+  localStorage.setItem('perfil',JSON.stringify(data));
+  alert('Perfil guardado, no se borra');
+}
+function cargarPerfil(){
+  const raw=localStorage.getItem('perfil');
+  if(!raw) return;
+  const d=JSON.parse(raw);
+  desc.value=d.desc||'';bio.value=d.bio||'';nombre.value=d.nombre||'';edad.value=d.edad||'';apodo.value=d.apodo||'';
+  esc.value=d.esc||'';links16.value=d.links16||'';links9.value=d.links9||'';pais.value=d.pais||'';email.value=d.email||'easportsfcmobile631@gmail.com';
+  tel.value=d.tel||'+52 8671640906';ocu.value=d.ocu||'';idioma.value=d.idioma||'Español';
+  if(d.tz) tz.value=d.tz;
+  const foto=localStorage.getItem('perfil_foto');
+  if(foto){avatarPrev.src=foto;topAvatar.src=foto;}
+}
+function guardarFoto(){
+  const file=fotoInput.files[0];
+  if(!file) return alert('Selecciona foto');
+  const r=new FileReader();
+  r.onload=e=>{localStorage.setItem('perfil_foto',e.target.result);avatarPrev.src=e.target.result;topAvatar.src=e.target.result;alert('Foto guardada, se queda');};
+  r.readAsDataURL(file);
+}
+function cerrarSesion(){if(confirm('¿Cerrar sesión?')){location.href='./index.html';}}
+// Cargar foto al inicio
+window.addEventListener('load',()=>{const f=localStorage.getItem('perfil_foto');if(f){document.getElementById('topAvatar').src=f;}});
+</script>
 </body>
-</html>
+  </html>
